@@ -62,6 +62,7 @@ void debug(char *message)
   fprintf(stderr, "%s\n", message);
 }
 
+/*
 void addCardFile(char vetor[], FILE *file, char caracter)
 {
 
@@ -75,7 +76,7 @@ void addCardFile(char vetor[], FILE *file, char caracter)
     valor = strtok(NULL, caracter);
     file = fprintf(file, "%s\n", valor);
   }
-}
+}*/
 
 // APESAR DO CÓDIGO ESTAR EM UMA ÚNICA FUNÇÃO, É SEU OBJETIVO ESCREVER A LÓGICA
 // DE FORMA ORGANIZADA, USANDO DIFERENTES FUNÇÕES E ARQUIVOS.
@@ -100,10 +101,16 @@ int main()
   scanf("HAND %[^\n]\n", hand);
   scanf("TABLE %s\n", cardTable);
 
-  arquivoCartas = fopen("Arquivos/cartas.txt", "w");
+  debug(hand);
 
-  addCardFile(hand, arquivoCartas, " ");
+  arquivoCartas = fopen("cartas_teste.txt", "w");
+  
+  fputs(hand, arquivoCartas);
+
   fclose(arquivoCartas);
+
+
+  
   // === PARTIDA ===
 
   char id[MAX_ID_SIZE];
@@ -254,8 +261,9 @@ int main()
 
     // Nesse exemplo de ação, o bot tenta descartar a carta 4♥.
     // Se ele não tiver na mão, a ação é simplesmente ignorada.
-    char card[] = "A♥ ♥";
-    printf("DISCARD %s\n", card);
+
+    //char card[] = "A♥ ♥";
+    //printf("DISCARD %s\n", card);
   }
 
   return 0;
