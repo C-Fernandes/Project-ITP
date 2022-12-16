@@ -18,7 +18,7 @@
     "VOLTA"      : D = DAMA
     "PULA A VEZ" : R = REI
     "MUDE A COR" : A = ÀS (muda o naipe)
-  
+
   A partida será jogada com um único baralho. Assim, teremos quatro cartas de um valor. Por
   exemplo, 7♥, 7♦, 7♣, 7♠, com exceção do coringa, que há apenas duas: um vermelho e um preto.
   Porém, para seguir o padrão das cartas, os coringas terão também um naipe, mas serão apenas
@@ -56,63 +56,31 @@
  * Para "debugar", é possível enviar uma mensagem para a saída de erro padrão (stderr).
  * Essa mensagem não será enviada para o simulador, apenas para o terminal.
  */
-void debug(char *message) {
+void debug(char *message)
+{
   fprintf(stderr, "%s\n", message);
 }
 
 // APESAR DO CÓDIGO ESTAR EM UMA ÚNICA FUNÇÃO, É SEU OBJETIVO ESCREVER A LÓGICA
 // DE FORMA ORGANIZADA, USANDO DIFERENTES FUNÇÕES E ARQUIVOS.
 
-int main() {
+int main()
+{
   // Obs: As variáveis deste template foram definidas apenas para o código compilar e rodar.
   // Então, cabe a você usar as variáveis adequadas em função do que está lendo.
-  char temp[MAX_LINE];   // string para leitura temporária de dados
-  char my_id[MAX_ID_SIZE];  // identificador do seu bot
+  char hand[MAX_LINE];     // string para leitura temporária de dados
+  char my_id[MAX_ID_SIZE]; // identificador do seu bot
+  char cardTable[MAX_ACTION];
+  char players[MAX_LINE];
 
-  setbuf(stdin, NULL);   // stdin, stdout e stderr não terão buffers
-  setbuf(stdout, NULL);  // assim, nada é "guardado temporariamente"
+  setbuf(stdin, NULL);  // stdin, stdout e stderr não terão buffers
+  setbuf(stdout, NULL); // assim, nada é "guardado temporariamente"
   setbuf(stderr, NULL);
 
-  // === INÍCIO DA PARTIDA ===
-
-  /*
-  Antes da partida começar, o simulador irá enviar alguns dados para seu bot, a saber:
-  - os bots que estão jogando, no formato: "PLAYERS <bot_1> <bot_2> ...";
-  - o identificador de seu bot, no formato: "YOU <id>";
-  - as cartas da sua mão, no formato: "HAND [ <c_1> <c_2> ... ]";
-  - a carta que se encontra sobre a mesa, no formato "TABLE <c>".
-
-  Um exemplo de dados iniciais é:
-    PLAYERS b1 b2 b3
-    YOU b1
-    HAND [ 4♥ 7♦ 2♣ V♠ A♥ 3♦ 2♣ 9♠ ]
-    TABLE 8♦
-
-  Seu bot deve, então, ler todos esses dados no início do programa. Veja que o conjunto
-  de cartas na mão do bot está entre []. Cabe a você tratar essa entrada.
-  */
-
-  // Lê uma linha até o '\n' com os identificadores dos jogadores.
-  // Será necessário separar os identificadores para saber quem são, quantos bots estão
-  // jogando e qual a ordem inicial de jogada deles.
-  scanf("PLAYERS [ %[^\n]\n", temp);
-
-  // Caso queira imprimir uma mensagem para debugar, pode chamar 'debug()' passando uma string.
-  // Por exemplo: debug(temp);
-  debug(temp);
-
-  // Lê o identificador do próprio bot. Isso é importante para testar quando é sua vez.
+  scanf("PLAYERS [ %[^\n]\n", players);
   scanf("YOU %s\n", my_id);
-
-  // Lê as cartas iniciais que o bot tem na mão. Ex: "[ 4♥ 7♦ 2♣ J♠ A♥ 3♦ 2♣ 9♠ ]".
-  // Os caracteres especiais (♥, ♦, ♣ e ♠) são caracteres ascii estendidos e precisam de
-  // mais de um byte para armazená-los. Assim, é interesante guardá-los como strings.
-  // Obs: lembre-se de tratar os colchetes.
-  scanf("HAND %[^\n]\n", temp);
-
-  // Lê a carta aberta sobre a mesa. Ex: TABLE 8♣
-  scanf("TABLE %s\n", temp);
-
+  scanf("HAND %[^\n]\n", hand);
+  scanf("TABLE %s\n", cardTable);
 
   // === PARTIDA ===
 
@@ -129,15 +97,16 @@ int main() {
   Nesse último caso, ganha quem tiver menos cartas na mão. Em caso de mais de um bot ter o menor
   número de cartas na mão, todos eles são considerados os ganhadores.
   */
-  while(1) {
-    // A primeira coisa fazer é "esperar sua vez".
-    // É preciso, então, de um laço enquanto a vez do seu bot não chega.
-    do {
+  while (1)
+  {
+    do
+    {
+      scanf("%s %s", action, complement);
       /*
       Enquanto não chega a vez do seu bot, ele estará "escutando" todos os eventos
       do jogo. Estes eventos são repassados para todos os bots em uma linha no formato:
         <ação> <complemento1> [complemento2]
-      
+
       Ou seja, <ação> <complemento1> estão sempre presentes na mensagem do evento, porém
       a presença de [complemento2] vai depender da ação e do complemento1.
       Por exemplo, se um bot descartar um 7 de paus, será gerado o seguinte evento:
@@ -145,7 +114,7 @@ int main() {
       A ação é DISCARD e o complemento é 7♣. Portanto, o próximo bot deverá descartar ou
       um 7 (de qualquer naipe) ou uma carta do naipe ♣. Guarde essa informação porque o
       próximo bot poderá ser o seu.
-    
+
       Se a carta descartada for, por exemplo, A♣ (Ás = muda de cor), haverá um segundo
       complemento com o naipe a ser seguido pelos próximos jogadores. Por exemplo: no
       evento "DISCARD A♣ ♥", o próximo bot deverá então descartar alguma carta do naipe ♥.
@@ -156,20 +125,20 @@ int main() {
       eliminado da partida.
       */
 
-      scanf("%s %s", action, complement);
+      
       // obs: um segundo scanf pode ser realizado par ler o 2º complemento.
 
-      /*      
+      /*
       Há um evento especial que não é gerado pelos outros bots, mas pelo simulador.
       Ele tem o formato: "TURN <id>".
       O simulador envia esta mensagem quando for a vez do bot de identificador <id>.
       Então, termine este laço interno quando for a vez do seu bot agir.
       */
     } while (strcmp(action, "TURN") || strcmp(complement, my_id));
-    
+
     // agora é a vez do seu bot jogar
     debug("----- MINHA VEZ -----");
-    
+
     /*
     Seu bot realiza uma ação no jogo enviando para a saída-padrão uma string no formato:
       <ação> <complemento1> [complemento2]
@@ -253,8 +222,8 @@ int main() {
       se encontra sobre a mesa, a ação será ignorada. Ou seja, para o simulador, o bot
       continuará com a referida carta na mão.
     - Se o bot precisar comprar 2 ou 4 cartas e não enviar a ação "BUY" com o complemento
-      correspondente, o bot sai do jogo e perde de vez a partida. 
-    
+      correspondente, o bot sai do jogo e perde de vez a partida.
+
     Outra penalidade é se o bot demorar mais de 3 segundos para responder uma ação. Isso
     significa que a leitura e escrita dos dados está fora de sincronia com o simulador
     (o bot esperando um dado do simulador e o simulador esperando um dado do bot).
