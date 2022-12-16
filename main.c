@@ -46,6 +46,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /** Constantes para as strings a serem lidas */
 #define MAX_LINE 100
@@ -61,6 +62,21 @@ void debug(char *message)
   fprintf(stderr, "%s\n", message);
 }
 
+void addCardFile(char vetor[], FILE *file, char caracter)
+{
+
+  debug(vetor);
+  char *valor;
+  valor = strtok(vetor, caracter);
+  file = fprintf(file, "%s\n", valor);
+
+  while (valor != NULL)
+  {
+    valor = strtok(NULL, caracter);
+    file = fprintf(file, "%s\n", valor);
+  }
+}
+
 // APESAR DO CÓDIGO ESTAR EM UMA ÚNICA FUNÇÃO, É SEU OBJETIVO ESCREVER A LÓGICA
 // DE FORMA ORGANIZADA, USANDO DIFERENTES FUNÇÕES E ARQUIVOS.
 
@@ -68,6 +84,8 @@ int main()
 {
   // Obs: As variáveis deste template foram definidas apenas para o código compilar e rodar.
   // Então, cabe a você usar as variáveis adequadas em função do que está lendo.
+  FILE *arquivoCartas, *arquivoCartasPlayers;
+
   char hand[MAX_LINE];     // string para leitura temporária de dados
   char my_id[MAX_ID_SIZE]; // identificador do seu bot
   char cardTable[MAX_ACTION];
@@ -77,11 +95,15 @@ int main()
   setbuf(stdout, NULL); // assim, nada é "guardado temporariamente"
   setbuf(stderr, NULL);
 
-  scanf("PLAYERS [ %[^\n]\n", players);
+  scanf("PLAYERS %[^\n]\n", players);
   scanf("YOU %s\n", my_id);
   scanf("HAND %[^\n]\n", hand);
   scanf("TABLE %s\n", cardTable);
 
+  arquivoCartas = fopen("Arquivos/cartas.txt", "w");
+
+  addCardFile(hand, arquivoCartas, " ");
+  fclose(arquivoCartas);
   // === PARTIDA ===
 
   char id[MAX_ID_SIZE];
@@ -102,6 +124,7 @@ int main()
     do
     {
       scanf("%s %s", action, complement);
+
       /*
       Enquanto não chega a vez do seu bot, ele estará "escutando" todos os eventos
       do jogo. Estes eventos são repassados para todos os bots em uma linha no formato:
@@ -125,7 +148,6 @@ int main()
       eliminado da partida.
       */
 
-      
       // obs: um segundo scanf pode ser realizado par ler o 2º complemento.
 
       /*
