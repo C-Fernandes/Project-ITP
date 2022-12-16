@@ -46,7 +46,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
 /** Constantes para as strings a serem lidas */
 #define MAX_LINE 100
