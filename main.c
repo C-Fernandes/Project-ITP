@@ -97,8 +97,34 @@ FILE *addCardFile(char vetor[], char caracter[], char endereco[MAX_LINE], char t
   return file;
 }
 
-// APESAR DO CÓDIGO ESTAR EM UMA ÚNICA FUNÇÃO, É SEU OBJETIVO ESCREVER A LÓGICA
-// DE FORMA ORGANIZADA, USANDO DIFERENTES FUNÇÕES E ARQUIVOS.
+FILE *removerInfo(char info[], char endereco[], int quantCartas)
+{
+
+  char vetorCartas[quantCartas][8];
+  FILE *file;
+  char carta[8];
+  int contador = 0;
+  file = fopen(endereco, "r");
+
+  for (int i = 0; i <= quantCartas; i++)
+  {
+    fscanf(file, "%[^\n]\n", carta);
+    if (strcmp(info, carta) != 0)
+    {
+      strcpy(vetorCartas[contador], carta);
+      contador++;
+    }
+  }
+  fclose(file);
+  file = fopen(endereco, "w");
+
+  for (int i = 0; i < quantCartas; i++)
+  {
+    fprintf(file, "%s\n", vetorCartas[i]);
+  }
+  fclose(file);
+  return file;
+}
 
 int main()
 {
@@ -112,6 +138,10 @@ int main()
   char players[MAX_LINE];
 
   char naipeDaVez[5];
+  int quantCartas = 7;
+  char card[MAX_ID_SIZE];
+
+  char endArqCartas[] = "Arquivos/cartas.txt";
 
   setbuf(stdin, NULL);  // stdin, stdout e stderr não terão buffers
   setbuf(stdout, NULL); // assim, nada é "guardado temporariamente"
@@ -134,13 +164,14 @@ int main()
   {
     do
     {
-      scanf("%s %s ", action, complement);
+      scanf("%s %s", action, complement);
 
-      if (complement[0] == 'A')
+      if (complement[0] == 'A' || complement[0] == 'C')
       {
         scanf("%s", naipeDaVez);
+        debug(naipeDaVez);
       }
-      scanf("\n");
+      getchar();
 
       if (strcmp(action, "DISCARD") == 0)
       {
@@ -183,16 +214,88 @@ int main()
     // agora é a vez do seu bot jogar
     debug("----- MINHA VEZ -----");
 
-    if (cardTable[0] == 'V')
+    if (cardTable[0] == 'V' || cardTable[0] == 'C')
     {
-      printf("BUY 2\n");
-    }
-    else if (cardTable[0] == 'C')
-    {
-      printf("BUY 4\n");
-    }
 
-    printf("DISCARD %s\n", complement);
+      if (cardTable[0] == 'V')
+      {
+        printf("BUY 2\n");
+        quantCartas = quantCartas + 2;
+      }
+      if (cardTable[0] == 'C')
+      {
+        printf("BUY 4\n");
+        quantCartas = quantCartas + 4;
+      }
+      scanf("HAND [ %[^\n]\n", hand);
+      arquivoCartas = addCardFile(hand, " \0", endArqCartas, "a\0", "]\0");
+    }
+    else
+    {
+
+      arquivoCartas = fopen(endArqCartas, "r");
+      if (arquivoCartas == NULL)
+      {
+        printf("Error ao abrir o arquivo\n");
+      }
+
+      int i = 0;
+    //  printf("Quant Cartas: %d\n", quantCartas);
+      while (i < quantCartas)
+      {
+
+        int testador = 0;
+        char cartaTeste[7];
+        //printf("Passa aqui\n");
+        fscanf(arquivoCartas, "%s\n", cartaTeste);
+        //printf("Depois do fscanf\n");
+        if ((cartaTeste[0] == cardTable[0]))
+        {
+
+          printf("DISCARD %s\n", cartaTeste);
+          quantCartas--;
+          //printf("Vem p cá\n");
+          removerInfo(cartaTeste, endArqCartas, quantCartas);
+          break;
+        }
+        int valor = 5;
+        if (cartaTeste[0] == 1 && cartaTeste[1] == 1)
+        {
+          valor = 7;
+        }
+        for (int i = 1; i < valor; i++)
+        {
+          if (cartaTeste[i] == cardTable[i])
+          {
+            testador++;
+          }
+        }
+
+        if (testador == 4)
+        {
+          printf("DISCARD %s\n", cartaTeste);
+          quantCartas--;
+          removerInfo(cartaTeste, endArqCartas, quantCartas);
+          break;
+        }
+        i++;
+        //printf("Valor de i: %d\n", i);
+      }
+
+      //printf("Valor de i depois do while: %d\n", i);
+
+
+      fclose(arquivoCartas);
+      //printf("Passou do fclose\n");
+      if (i == quantCartas)
+      {
+        //printf("Entra no if\n");
+        printf("BUY 1\n");
+        scanf("%[^\n]\n", hand);
+        arquivoCartas = addCardFile(hand, " \0", "Arquivos/cartas.txt", "a\0", "]\0");
+        quantCartas++;
+      }
+    }
 
     /*
     Seu bot realiza uma ação no jogo enviando para a saída-padrão uma string no formato:
@@ -259,13 +362,6 @@ int main()
       Se <card> for um Coringa (C) ou Ás (A), um naipe deve ser informado também.
     - "BUY <num>", onde <num> é a quantidade de cartas a serem compradas da pilha.
 
-    Exemplos:
-      DISCARD 4♥
-      DISCARD A♣ ♥
-      SAY Droga!
-      BUY 2
-      BUY 4
-      BUY 1
 
     OBS: Todas as mensagens enviadas **DEVEM terminar com salto de linha ('\n')**, caso
          contrário, o simulador não saberá quando uma ação termina e quebrar o sincronização
