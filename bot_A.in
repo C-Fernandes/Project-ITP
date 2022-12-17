@@ -1,0 +1,9 @@
+PLAYERS main bot_A
+YOU bot_A
+HAND [ 5♣ 7♣ A♥ 3♠ 2♥ 9♠ 5♥ ]
+TABLE A♣
+TURN bot_A
+TURN main
+DISCARD 2♣
+TURN bot_A
+TURN main

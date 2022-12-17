@@ -1,0 +1,10 @@
+PLAYERS main bot_B
+YOU bot_B
+HAND [ 7♣ 7♦ A♥ A♦ 9♠ C♣ 2♦ ]
+TABLE A♣
+TURN bot_B
+TURN main
+DISCARD 9♣
+TURN bot_B
+TURN main
+BUY 4
