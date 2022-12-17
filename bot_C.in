@@ -1,11 +1,10 @@
 PLAYERS bot_A main bot_B bot_C
-YOU bot_B
-HAND [ 2♠ V♦ C♥ 6♥ 4♥ 8♦ 6♥ ]
+YOU bot_C
+HAND [ R♥ R♠ 3♥ D♠ A♥ 2♥ R♥ ]
 TABLE A♣
 TURN bot_B
-10♦
+BUY 1
 TURN bot_C
-DISCARD A♥ ♥
 TURN bot_A
 DISCARD 5♥
 TURN main
@@ -13,7 +12,6 @@ DISCARD D♥
 TURN bot_A
 BUY 1
 TURN bot_C
-DISCARD R♥
 TURN main
 DISCARD A♥
 TURN bot_A

@@ -214,25 +214,27 @@ int main()
 
       if (strcmp(action, "DISCARD") == 0)
       {
+        printf("Entroy no if do discard\n");
 
-        if ((complement[0] == 'A' )|| (complement[0] == 'C'))
+        if ((complement[0] == 'A') || (complement[0] == 'C'))
         {
 
           scanf("%s", naipeDaVez);
-          debug(naipeDaVez);
+          printf("Naipe: %s\n", naipeDaVez);
         }
         if ((complement[0] != 'A') && (complement[0] != 'C'))
         {
+          printf("Entrou no segundo if\n");
           mudarNaipe(complement, &naipeDaVez);
 
           // printf("Naipe diferente:  %s\n", naipeDaVez);
         }
-        else
-        {
-          mudarNaipe(cardTable, &naipeDaVez);
-        }
       }
-
+      if ((strcmp(action, "TURN") != 0) && (strcmp(action, "DISCARD") != 0))
+      {
+        printf("Entrou no else\n");
+        mudarNaipe(cardTable, &naipeDaVez);
+      }
       getchar();
 
       if (strcmp(action, "DISCARD") == 0)
@@ -272,9 +274,10 @@ int main()
       Então, termine este laço interno quando for a vez do seu bot agir.
       */
     } while (strcmp(action, "TURN") || strcmp(complement, my_id));
-    ehDez = false;
+
     // agora é a vez do seu bot jogar
     debug("----- MINHA VEZ -----");
+
     if ((cardTable[0] == 'V' || cardTable[0] == 'C') && (outroJogadorComprou == false))
     {
       int quant = 0;
@@ -300,27 +303,36 @@ int main()
     else
     {
 
+      //  printf("Entrou no else\n");
+
       arquivoCartas = fopen(endArqCartas, "r");
       if (arquivoCartas == NULL)
       {
         printf("Error ao abrir o arquivo\n");
       }
+      // printf("Abriu o arquivo\n");
       ehDez = verificarSeEhDez(cardTable);
-
+      // printf("Passou da função ehDez\n");
+      // printf("É dez: %d\n", ehDez);
       int j = 0;
       //  printf("Quant Cartas: %d\n", quantCartas);
       while (j < quantCartas)
       {
+        // printf("Entrou no while\n");
         int valor = 5, i = 1;
 
         int testador = 0;
         char cartaTeste[6];
         // printf("Passa aqui\n");
+
         fscanf(arquivoCartas, "%s\n", cartaTeste);
         // printf("Depois do fscanf\n");
-        if (ehDez)
+        if (ehDez == true)
         {
+
+          // printf("É dez: %d\n", ehDez);
           ehDez = verificarSeEhDez(cartaTeste);
+          // printf("É dez depois da função: %d\n", ehDez);
           if (ehDez == true)
           {
             valor = 6;
@@ -328,31 +340,39 @@ int main()
           }
         }
 
+        // printf("Carta teste: %c || cardTable: %c\n", cartaTeste[0], cardTable[0]);
         if ((cartaTeste[0] == cardTable[0]) || (ehDez == true))
         {
-          char naipe[] = "♠";
-          debug(cartaTeste[0]);
+
+          // printf("Entrou na fução if\n");
+          printf("DISCARD %s", cartaTeste);
+
+          debug("Passou do printf");
           if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
           {
-
-            printf("DISCARD %s %s\n", cartaTeste, naipe);
+            debug("Entrou aqui");
+            printf(" %s", tiposDeNaipes[3]);
+           
           }
-          if ((cartaTeste[0] != 'A') && (cartaTeste[0] != 'C'))
-          {
-            printf("DISCARD %s\n", cartaTeste);
-          }
+          printf("\n");
+          // printf("Cardtable antes da função: %s\n", cardTable);
           strcpy(cardTable, cartaTeste);
+          // printf("Cardtable depois da função: %s\n", cardTable);
           quantCartas--;
           removerInfo(cartaTeste, endArqCartas, quantCartas);
           break;
         }
+        // printf("Carta teste: %s || Naipe da vez: %s\n", cartaTeste, naipeDaVez);
         for (i; i < valor; i++)
         {
+
           if (cartaTeste[i] == naipeDaVez[testador])
           {
             testador++;
           }
+          // printf("Testador: %d\n", testador);
         }
+
         if (testador == 4)
         {
           printf("DISCARD %s\n", cartaTeste);
@@ -362,16 +382,17 @@ int main()
           break;
         }
         j++;
+        // printf("Valor j: %d\n", j);
       }
 
       fclose(arquivoCartas);
       if (j == quantCartas)
       {
-        printf("Entrou aqui\n");
         printf("BUY 1\n");
         scanf("%s\n", hand);
         arquivoCartas = addCardFile(hand, NULL, "Arquivos/cartas.txt", "a\0", NULL);
         quantCartas++;
+        // printf("Passou no ultimo if %d\n", &quantCartas);
       }
     }
 
