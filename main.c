@@ -46,11 +46,19 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /** Constantes para as strings a serem lidas */
 #define MAX_LINE 100
 #define MAX_ACTION 10
 #define MAX_ID_SIZE 10
+
+char tiposDeCartas = {'A', '2', '3', '4', ' 5', '6',
+                      '7', '8', '9', '10', 'V', 'D', 'R', 'C'};
+char tiposDeNaipes[4][4] = {{"♥"},
+                            {"♦"},
+                            {"♣"},
+                            {"♠"}};
 
 /**
  * Para "debugar", é possível enviar uma mensagem para a saída de erro padrão (stderr).
@@ -61,19 +69,32 @@ void debug(char *message)
   fprintf(stderr, "%s\n", message);
 }
 
-void addCardFile(char vetor[], FILE *file, char caracter)
+FILE *addCardFile(char vetor[], char caracter[], char endereco[MAX_LINE], char tipoAbertura[], char caracterRemove[])
 {
-
-  debug(vetor);
-  char *valor;
-  valor = strtok(vetor, caracter);
-  file = fprintf(file, "%s\n", valor);
-
-  while (valor != NULL)
+  FILE *file;
+  char *variavel;
+  file = fopen(endereco, tipoAbertura);
+  if (file == NULL)
   {
-    valor = strtok(NULL, caracter);
-    file = fprintf(file, "%s\n", valor);
+    printf("Problemas ao abrir o arquivo");
   }
+  variavel = strtok(vetor, caracter);
+  fprintf(file, "%s\n", variavel);
+
+  while (variavel != NULL)
+  {
+    variavel = strtok(NULL, caracter);
+    if (caracterRemove != NULL)
+    {
+      if (strcmp(variavel, caracterRemove) == 0)
+      {
+        break;
+      }
+    }
+    fprintf(file, "%s\n", variavel);
+  }
+  fclose(file);
+  return file;
 }
 
 // APESAR DO CÓDIGO ESTAR EM UMA ÚNICA FUNÇÃO, É SEU OBJETIVO ESCREVER A LÓGICA
@@ -90,29 +111,18 @@ int main()
   char cardTable[MAX_ACTION];
   char players[MAX_LINE];
 
+  char naipeDaVez[5];
+
   setbuf(stdin, NULL);  // stdin, stdout e stderr não terão buffers
   setbuf(stdout, NULL); // assim, nada é "guardado temporariamente"
   setbuf(stderr, NULL);
 
   scanf("PLAYERS %[^\n]\n", players);
   scanf("YOU %s\n", my_id);
-  scanf("HAND %[^\n]\n", hand);
+  scanf("HAND [ %[^\n]\n", hand);
   scanf("TABLE %s\n", cardTable);
 
-  debug(hand);
-  printf("Players %s\n", players);
-  printf("My id %s\n", my_id);
-  printf("Mao %s\n", hand);
-  printf("TABLE: %s\n", cardTable);
-  
-  arquivoCartas = fopen("Arquivos/cartas.txt", "w");
-  if (arquivoCartas == NULL)
-  {
-    printf("Problemas ao abrir o arquivo");
-  }
-  addCardFile(hand, arquivoCartas, " ");
-
-  fclose(arquivoCartas);
+  arquivoCartas = addCardFile(hand, " \0", "Arquivos/cartas.txt", "w\0", "]\0");
 
   // === PARTIDA ===
 
@@ -120,20 +130,22 @@ int main()
   char action[MAX_ACTION];
   char complement[MAX_LINE];
 
-  /*
-  O `while(1) faz o bot entra num laço infinito, mas não se preocupe. O simulador do jogo irá
-  "matar" o seu programa quando o jogo terminar.
-  O jogo termina em duas ocasiões:
-    1) quando um bot não tiver mais carta (GANHOU!)
-    2) quando não tiver mais carta na pilha para comprar.
-  Nesse último caso, ganha quem tiver menos cartas na mão. Em caso de mais de um bot ter o menor
-  número de cartas na mão, todos eles são considerados os ganhadores.
-  */
   while (1)
   {
     do
     {
-      // scanf("%s %s", action, complement);
+      scanf("%s %s ", action, complement);
+
+      if (complement[0] == 'A')
+      {
+        scanf("%s", naipeDaVez);
+      }
+      scanf("\n");
+
+      if (strcmp(action, "DISCARD") == 0)
+      {
+        strcpy(cardTable, complement);
+      }
 
       /*
       Enquanto não chega a vez do seu bot, ele estará "escutando" todos os eventos
@@ -170,6 +182,17 @@ int main()
 
     // agora é a vez do seu bot jogar
     debug("----- MINHA VEZ -----");
+
+    if (cardTable[0] == 'V')
+    {
+      printf("BUY 2\n");
+    }
+    else if (cardTable[0] == 'C')
+    {
+      printf("BUY 4\n");
+    }
+
+    printf("DISCARD %s\n", complement);
 
     /*
     Seu bot realiza uma ação no jogo enviando para a saída-padrão uma string no formato:
