@@ -61,7 +61,6 @@ void debug(char *message)
   fprintf(stderr, "%s\n", message);
 }
 
-/*
 void addCardFile(char vetor[], FILE *file, char caracter)
 {
 
@@ -75,7 +74,7 @@ void addCardFile(char vetor[], FILE *file, char caracter)
     valor = strtok(NULL, caracter);
     file = fprintf(file, "%s\n", valor);
   }
-}*/
+}
 
 // APESAR DO CÓDIGO ESTAR EM UMA ÚNICA FUNÇÃO, É SEU OBJETIVO ESCREVER A LÓGICA
 // DE FORMA ORGANIZADA, USANDO DIFERENTES FUNÇÕES E ARQUIVOS.
@@ -101,15 +100,20 @@ int main()
   scanf("TABLE %s\n", cardTable);
 
   debug(hand);
-
-  arquivoCartas = fopen("cartas_teste.txt", "w");
+  printf("Players %s\n", players);
+  printf("My id %s\n", my_id);
+  printf("Mao %s\n", hand);
+  printf("TABLE: %s\n", cardTable);
   
-  fputs(hand, arquivoCartas);
+  arquivoCartas = fopen("Arquivos/cartas.txt", "w");
+  if (arquivoCartas == NULL)
+  {
+    printf("Problemas ao abrir o arquivo");
+  }
+  addCardFile(hand, arquivoCartas, " ");
 
   fclose(arquivoCartas);
 
-
-  
   // === PARTIDA ===
 
   char id[MAX_ID_SIZE];
@@ -129,7 +133,7 @@ int main()
   {
     do
     {
-      scanf("%s %s", action, complement);
+      // scanf("%s %s", action, complement);
 
       /*
       Enquanto não chega a vez do seu bot, ele estará "escutando" todos os eventos
@@ -261,8 +265,8 @@ int main()
     // Nesse exemplo de ação, o bot tenta descartar a carta 4♥.
     // Se ele não tiver na mão, a ação é simplesmente ignorada.
 
-    //char card[] = "A♥ ♥";
-    //printf("DISCARD %s\n", card);
+    // char card[] = "A♥ ♥";
+    // printf("DISCARD %s\n", card);
   }
 
   return 0;
