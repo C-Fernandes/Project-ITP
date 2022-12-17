@@ -166,7 +166,6 @@ void mudarNaipe(char carta[], char *naipeDaVez)
     contador++;
   }
   strcpy(naipeDaVez, naipe);
-  
 }
 
 int main()
@@ -211,23 +210,26 @@ int main()
     do
     {
 
-      mudarNaipe(cardTable, &naipeDaVez);
-       scanf("%s %s", action, complement);
+      scanf("%s %s", action, complement);
 
       if (strcmp(action, "DISCARD") == 0)
       {
 
-        if (complement[0] == 'A' || complement[0] == 'C')
+        if ((complement[0] == 'A' )|| (complement[0] == 'C'))
         {
 
           scanf("%s", naipeDaVez);
           debug(naipeDaVez);
         }
-        else
+        if ((complement[0] != 'A') && (complement[0] != 'C'))
         {
           mudarNaipe(complement, &naipeDaVez);
-         
+
           // printf("Naipe diferente:  %s\n", naipeDaVez);
+        }
+        else
+        {
+          mudarNaipe(cardTable, &naipeDaVez);
         }
       }
 
@@ -237,10 +239,7 @@ int main()
       {
         strcpy(cardTable, complement);
       }
-      if ((strcmp(action, "BUY") == 0))
-      {
-        outroJogadorComprou = true;
-      }
+
       /*
       Enquanto não chega a vez do seu bot, ele estará "escutando" todos os eventos
       do jogo. Estes eventos são repassados para todos os bots em uma linha no formato:
@@ -308,9 +307,9 @@ int main()
       }
       ehDez = verificarSeEhDez(cardTable);
 
-      int i = 0;
+      int j = 0;
       //  printf("Quant Cartas: %d\n", quantCartas);
-      while (i < quantCartas)
+      while (j < quantCartas)
       {
         int valor = 5, i = 1;
 
@@ -331,11 +330,19 @@ int main()
 
         if ((cartaTeste[0] == cardTable[0]) || (ehDez == true))
         {
+          char naipe[] = "♠";
+          debug(cartaTeste[0]);
+          if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
+          {
 
-          printf("DISCARD %s\n", cartaTeste);
+            printf("DISCARD %s %s\n", cartaTeste, naipe);
+          }
+          if ((cartaTeste[0] != 'A') && (cartaTeste[0] != 'C'))
+          {
+            printf("DISCARD %s\n", cartaTeste);
+          }
           strcpy(cardTable, cartaTeste);
           quantCartas--;
-          // printf("Vem p cá\n");
           removerInfo(cartaTeste, endArqCartas, quantCartas);
           break;
         }
@@ -343,11 +350,9 @@ int main()
         {
           if (cartaTeste[i] == naipeDaVez[testador])
           {
-            printf("Entrou no if de comparação\n");
             testador++;
           }
         }
-        printf("Testador: %d\n", testador);
         if (testador == 4)
         {
           printf("DISCARD %s\n", cartaTeste);
@@ -356,18 +361,13 @@ int main()
           removerInfo(cartaTeste, endArqCartas, quantCartas);
           break;
         }
-        i++;
-        printf("Valor de i: %d\n", i);
+        j++;
       }
 
-      printf("Valor de i depois do while: %d\n", i);
-
       fclose(arquivoCartas);
-      printf("Passou do fclose\n");
-
-      if (i == quantCartas)
+      if (j == quantCartas)
       {
-        printf("Entra no if");
+        printf("Entrou aqui\n");
         printf("BUY 1\n");
         scanf("%s\n", hand);
         arquivoCartas = addCardFile(hand, NULL, "Arquivos/cartas.txt", "a\0", NULL);
@@ -405,7 +405,7 @@ int main()
 
     Ao descartar um Ás ou Coringa, você deve enviar um segundo complemento para sua ação com
     o naipe que você deseja. Por exemplo:
-      "DISCARD C♣ ♥"
+      "DISCARD C♣ ♥" 1
     Neste caso, seu bot soltou um coringa preto e pediu para o naipe mudar para ♥ (o próximo
     jogador precisar comprar 4 cartas e o seguinte levar em conta que o ♥ é o naipe da vez).
     Depois do descarte, a vez do seu bot termina.

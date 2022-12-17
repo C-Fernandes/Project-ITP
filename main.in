@@ -1,10 +1,16 @@
 PLAYERS main bot_A
 YOU main
-HAND [ 3♥ 9♦ 2♣ D♦ R♥ 2♠ 10♥ ]
-TABLE A♣
+HAND [ 8♣ V♥ C♥ D♦ 3♣ D♥ A♥ ]
+TABLE A♥
 TURN bot_A
-DISCARD 5♣
+DISCARD 5♥
 TURN main
 TURN bot_A
-DISCARD 7♣
+BUY 2
 TURN main
+6♣
+A♥
+TURN bot_A
+DISCARD 4♥
+TURN main
+TURN bot_A
