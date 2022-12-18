@@ -1,14 +1,25 @@
 PLAYERS main bot_A
 YOU bot_A
-HAND [ 7♦ 4♦ A♥ 10♦ 10♥ 5♥ 4♦ ]
-TABLE A♥
+HAND [ 10♥ A♣ 7♥ 7♦ 7♣ R♥ V♦ ]
+TABLE A♠
+TURN main
+DISCARD 8♠
 TURN bot_A
+8♥
+TURN main
+DISCARD R♠
+TURN main
+DISCARD 3♠
+TURN bot_A
+8♦
+TURN main
+DISCARD 5♠
+TURN bot_A
+A♥
 TURN main
 BUY 1
 TURN bot_A
-TURN main
-BUY 1
-TURN bot_A
+C♥
 TURN main
 BUY 1
 TURN bot_A
@@ -16,44 +27,27 @@ TURN bot_A
 TURN main
 BUY 1
 TURN bot_A
-10♥
+10♣
+TURN main
+DISCARD 2♠
+TURN bot_A
+4♣
+TURN main
+BUY 1
+TURN bot_A
+D♠
+TURN main
+DISCARD A♠ ♥
+TURN bot_A
 TURN main
 BUY 1
 TURN bot_A
 TURN main
 BUY 1
 TURN bot_A
-TURN main
-BUY 1
 TURN bot_A
 TURN main
-BUY 1
-TURN bot_A
-TURN main
-DISCARD 4♥
-TURN bot_A
-TURN main
-DISCARD 4♠
-TURN bot_A
-6♣
-TURN main
-BUY 1
-TURN bot_A
-5♣
-TURN main
-BUY 1
-TURN bot_A
-2♥
-TURN main
-BUY 1
-TURN bot_A
-C♣
-TURN main
-BUY 1
-TURN bot_A
-R♦
-TURN main
-DISCARD 4♣
+DISCARD 8♣
 TURN bot_A
 TURN main
 BUY 1
@@ -64,58 +58,84 @@ TURN bot_A
 TURN main
 BUY 4
 TURN bot_A
+4♠
 TURN main
-DISCARD 2♥
-TURN bot_A
-7♠
-TURN main
-DISCARD 2♦
-TURN bot_A
-TURN main
-DISCARD 6♣
-TURN bot_A
-D♦
-TURN main
-DISCARD 6♠
-TURN bot_A
-TURN main
-DISCARD 7♣
-TURN bot_A
-8♦
-TURN main
-DISCARD 10♣
-TURN bot_A
-A♠
-TURN main
-BUY 1
+BUY 4
 TURN bot_A
 V♥
 TURN main
-BUY 1
+BUY 4
+TURN bot_A
+TURN main
+BUY 2
+TURN bot_A
+R♦
+TURN main
+BUY 2
+TURN bot_A
+8♠
+TURN main
+BUY 2
+TURN bot_A
+D♥
+TURN main
+BUY 2
+TURN bot_A
+TURN main
+DISCARD D♣
+TURN bot_A
+TURN main
+DISCARD 9♣
+TURN bot_A
+TURN main
+DISCARD 10♣
+TURN bot_A
+TURN main
+DISCARD V♣
+TURN bot_A
+2♣
+4♦
+TURN main
+BUY 2
+TURN bot_A
+TURN main
+DISCARD R♣
+TURN main
+DISCARD 7♣
+TURN bot_A
+TURN main
+DISCARD 6♦
+TURN bot_A
+TURN main
+BUY 2
+TURN bot_A
+TURN main
+DISCARD A♦ ♥
+TURN bot_A
+5♦
+TURN main
+DISCARD A♣ ♥
+TURN bot_A
+R♠
+TURN main
+INVALID ACTION
 TURN bot_A
 7♥
 TURN main
-BUY 1
-TURN bot_A
-4♣
-TURN main
-DISCARD 10♠
+DISCARD 5♥
 TURN bot_A
 TURN main
-BUY 1
+DISCARD 9♥
+TURN bot_A
+2♣
+TURN main
+DISCARD 2♥
 TURN bot_A
 TURN main
+DISCARD C♣ ♥
 TURN bot_A
-TURN bot_A
-R♣
-TURN bot_A
+9♦
+9♠
 8♦
-TURN bot_A
-7♣
-TURN bot_A
-TURN bot_A
-TURN bot_A
-TURN bot_A
-TURN bot_A
-TURN bot_A
-TURN bot_A
+6♣
+TURN main

@@ -1,93 +1,130 @@
 PLAYERS main bot_A
 YOU main
-HAND [ D♣ D♥ 9♣ V♣ 8♠ 9♦ 2♥ ]
-TABLE A♥
-TURN bot_A
-DISCARD A♥ ♥
+HAND [ 9♣ 6♦ 8♠ R♠ 3♠ 8♣ 5♠ ]
+TABLE A♠
 TURN main
-6♣
-TURN bot_A
-DISCARD 10♥
-TURN main
-3♥
-TURN bot_A
-DISCARD 5♥
-TURN main
-4♥
 TURN bot_A
 BUY 1
 TURN main
-4♠
+TURN main
+TURN bot_A
+BUY 1
+TURN main
+TURN bot_A
+BUY 1
+TURN main
+V♣
+TURN bot_A
+BUY 1
+TURN main
+R♣
+TURN bot_A
+BUY 1
+TURN main
+2♠
+TURN bot_A
+BUY 1
+TURN main
+TURN bot_A
+BUY 1
+TURN main
+A♠
+TURN bot_A
+BUY 1
+TURN main
+TURN bot_A
+DISCARD 10♥
+TURN main
+V♠
+TURN bot_A
+DISCARD 7♥
+TURN main
+D♣
+TURN bot_A
+DISCARD R♥
+TURN bot_A
+DISCARD 8♥
+TURN main
+TURN bot_A
+DISCARD A♣ ♥
+TURN main
+7♣
+TURN bot_A
+DISCARD A♥ ♥
+TURN main
+9♥
+TURN bot_A
+DISCARD C♥ ♥
+TURN main
+A♦
+2♥
+9♣
+7♠
+TURN bot_A
+BUY 1
+TURN main
+D♠
+A♣
+4♥
+5♣
 TURN bot_A
 BUY 1
 TURN main
 6♠
+7♠
+10♠
+3♦
 TURN bot_A
-DISCARD 10♥
+DISCARD V♥
 TURN main
-8♣
+3♥
+10♣
 TURN bot_A
-DISCARD 10♦
+BUY 1
 TURN main
-V♠
+C♥
+5♥
+TURN bot_A
+BUY 1
+TURN main
+V♥
+D♦
+TURN bot_A
+BUY 1
+TURN main
+9♠
+5♣
+TURN bot_A
+DISCARD D♥
+TURN main
+TURN bot_A
+DISCARD 7♣
+TURN main
+TURN bot_A
+DISCARD 10♣
+TURN main
+TURN bot_A
+DISCARD 4♣
+TURN main
+TURN bot_A
+BUY 2
+TURN main
+3♥
+C♣
+TURN bot_A
+DISCARD 2♣
+TURN main
+TURN main
 TURN bot_A
 DISCARD 7♦
 TURN main
-R♠
 TURN bot_A
-DISCARD 4♦
+DISCARD V♦
 TURN main
+3♣
+D♥
 TURN bot_A
-DISCARD 4♦
-TURN main
-TURN bot_A
-BUY 1
-TURN main
-8♥
-TURN bot_A
-BUY 1
-TURN main
-9♦
-TURN bot_A
-BUY 1
-TURN main
-8♣
-TURN bot_A
-BUY 1
-TURN main
-4♣
-TURN bot_A
-BUY 1
-TURN main
-TURN bot_A
-DISCARD 6♣
-TURN main
-6♥
-TURN bot_A
-DISCARD 5♣
-TURN main
-7♣
-TURN bot_A
-DISCARD C♣ ♥
-TURN main
-R♥
-10♣
-2♦
-V♦
-TURN bot_A
-DISCARD 2♥
-TURN main
-TURN bot_A
-BUY 1
-TURN main
-TURN bot_A
-DISCARD 6♦
-TURN main
-TURN bot_A
-BUY 1
-TURN main
-TURN bot_A
-DISCARD 7♠
+DISCARD 8♦
 TURN main
 TURN bot_A
 BUY 1
@@ -95,22 +132,18 @@ TURN main
 TURN bot_A
 BUY 1
 TURN main
-7♥
-TURN bot_A
-BUY 1
-TURN main
-4♥
-TURN bot_A
-BUY 1
-TURN main
-10♠
 TURN bot_A
 BUY 1
 TURN main
 TURN bot_A
-DISCARD A♠ ♥
+DISCARD 7♥
 TURN main
-A♣
 TURN bot_A
-DISCARD V♥
+BUY 1
+TURN main
+TURN bot_A
+DISCARD 2♣
+TURN main
+TURN bot_A
+BUY 4
 TURN main
