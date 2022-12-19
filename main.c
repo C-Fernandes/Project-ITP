@@ -7,8 +7,8 @@
 */
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 /** Constantes para as strings a serem lidas */
 #define MAX_LINE 100
@@ -18,18 +18,12 @@
 #define false 0
 #define true 1
 
-char tiposDeNaipes[4][4] = {{"♥"},
-                            {"♦"},
-                            {"♣"},
-                            {"♠"}};
+char tiposDeNaipes[4][4] = {{"♥"}, {"♦"}, {"♣"}, {"♠"}};
 
-void debug(char *message)
-{
-  fprintf(stderr, "%s\n", message);
-}
+void debug(char *message) { fprintf(stderr, "%s\n", message); }
 
-FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[], char caracterRemove[])
-{
+FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[],
+                  char caracterRemove[]) {
   // printf("entrou em addCardFile\n");
   // printf("%s\n", vetor);
   FILE *file;
@@ -37,15 +31,13 @@ FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[], ch
   // printf("Antes de abrir arquivo");
   file = fopen(endereco, tipoAbertura);
   // printf("abriu o arquivo\n");
-  if (file == NULL)
-  {
+  if (file == NULL) {
     printf("Problemas ao abrir o arquivo\n");
   }
 
   variavel = strtok(vetor, " ");
 
-  while (variavel != NULL && variavel[0] != ']')
-  {
+  while (variavel != NULL && variavel[0] != ']') {
     fprintf(file, "%s\n", variavel);
 
     variavel = strtok(NULL, " ");
@@ -56,8 +48,7 @@ FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[], ch
   return file;
 }
 
-FILE *removerInfo(char info[], char endereco[], int quantCartas)
-{
+FILE *removerInfo(char info[], char endereco[], int quantCartas) {
   // printf("entrou em removerInfo\n");
   char vetorCartas[quantCartas][8];
   FILE *file;
@@ -65,11 +56,9 @@ FILE *removerInfo(char info[], char endereco[], int quantCartas)
   int contador = 0;
   file = fopen(endereco, "r");
 
-  for (int i = 0; i <= quantCartas; i++)
-  {
+  for (int i = 0; i <= quantCartas; i++) {
     fscanf(file, "%s\n", carta);
-    if (strcmp(info, carta) != 0)
-    {
+    if (strcmp(info, carta) != 0) {
       strcpy(vetorCartas[contador], carta);
       contador++;
     }
@@ -77,8 +66,7 @@ FILE *removerInfo(char info[], char endereco[], int quantCartas)
   fclose(file);
   file = fopen(endereco, "w");
 
-  for (int i = 0; i < quantCartas; i++)
-  {
+  for (int i = 0; i < quantCartas; i++) {
     fprintf(file, "%s\n", vetorCartas[i]);
     // printf("Adicionou: %s\n", vetorCartas[i]);
   }
@@ -86,22 +74,17 @@ FILE *removerInfo(char info[], char endereco[], int quantCartas)
   return file;
 }
 
-int verificarSeEhDez(char carta[])
-{
+int verificarSeEhDez(char carta[]) {
   // printf("entrou em verificarSeEhDez\n");
-  if (carta[1] == 0 && carta[0] == 1)
-  {
+  if (carta[1] == 0 && carta[0] == 1) {
     return true;
-  }
-  else
-  {
+  } else {
     return false;
   }
   // printf("saiu de verificarSeEhDez");
 }
 
-void mudarNaipe(char carta[], char *naipeDaVez)
-{
+void mudarNaipe(char carta[], char *naipeDaVez) {
   // printf("Entrou no mudar naipe\n");
   char naipe[4];
   int ehDez = false;
@@ -109,14 +92,12 @@ void mudarNaipe(char carta[], char *naipeDaVez)
   int i = 1;
   int valor = 5;
   int contador = 0;
-  if (ehDez == true)
-  {
+  if (ehDez == true) {
     i = 2;
     valor = 6;
   }
 
-  for (i; i < valor; i++)
-  {
+  for (i; i < valor; i++) {
     naipe[contador] = carta[i];
     contador++;
   }
@@ -124,8 +105,44 @@ void mudarNaipe(char carta[], char *naipeDaVez)
   // printf("Sainda naipe função: %s\n", naipeDaVez);
 }
 
-int main()
-{
+// FUNÇÃO PARA VERIFICAR QUAL O MELHOR NAIPE PARA JOGAR:
+char *qualNaipe(char *naipeDaVez, char **hand, int quantCartas) {
+  char melhorNaipe[4]; // Melhor naipe a se jogar
+  int qtdNaipes[] = {0, 0, 0, 0}; // vetor para verificar quantidade de cartas de cada naipe
+
+  // Verificando quantas cartas de cada naipe o bot tem:
+  int i = 0;
+  while (i < 4) {
+    for (int j = 0; j < quantCartas; j++) {
+      int ehIgual = 0;
+      for (int k = 0; k < 4; k++) {
+        if (strcmp(&hand[j][k], &naipeDaVez[k]) == 0) {
+          ehIgual++;
+        }
+        if (ehIgual == 4) {
+          qtdNaipes[i]++;
+        }
+      }
+    }
+  }
+
+  // Comparando valores para saber qual dos naipes tem mais cartas:
+  int posicaoMaior = 0;
+  for (int i = 1; i < 4; i++) {
+    if (qtdNaipes[i] > qtdNaipes[i - 1]) {
+      posicaoMaior = i;
+    }
+  }
+
+  // atribuindo char do naipe escolhido para a variavel melhorNaipe
+  for (int i = 0; i < 4; i++) {
+    melhorNaipe[i] = tiposDeNaipes[posicaoMaior][i];
+  }
+
+  return melhorNaipe;
+}
+
+int main() {
   FILE *arquivoCartas, *arquivoCartasPlayers;
 
   char hand[MAX_LINE];
@@ -161,44 +178,35 @@ int main()
   char complement[MAX_LINE];
 
   mudarNaipe(cardTable, &naipeDaVez);
-  while (1)
-  {
+  while (1) {
     int jogou = false;
-    do
-    {
+    do {
 
       quantRodadas++;
       scanf("%s %s", action, complement);
 
-      if (strcmp(action, "DISCARD") == 0)
-      {
+      if (strcmp(action, "DISCARD") == 0) {
         jogou = true;
         strcpy(cardTable, complement);
         jaFoiComprado == false;
-        if ((complement[0] == 'A') || (complement[0] == 'C'))
-        {
+        if ((complement[0] == 'A') || (complement[0] == 'C')) {
 
           scanf("%s", naipeDaVez);
           // printf("Naipe: %s\n", naipeDaVez);
         }
-        if ((complement[0] != 'A') && (complement[0] != 'C'))
-        {
+        if ((complement[0] != 'A') && (complement[0] != 'C')) {
           // printf("Entrou no segundo if\n");
           mudarNaipe(complement, &naipeDaVez);
 
           // printf("Naipe diferente:  %s\n", naipeDaVez);
         }
-      }
-      else
-      {
-        if (strcmp(action, "TURN") != 0)
-        {
+      } else {
+        if (strcmp(action, "TURN") != 0) {
           // printf("Entrou no else antes do mudarNaipe\n");
           mudarNaipe(cardTable, &naipeDaVez);
         }
       }
-      if (strcmp(action, "") == 0)
-      {
+      if (strcmp(action, "") == 0) {
         quantRodadas = 0;
       }
       getchar();
@@ -208,37 +216,30 @@ int main()
     // agora é a vez do seu bot jogar
     debug("----- MINHA VEZ -----");
 
-    if ((cardTable[0] == 'V' || cardTable[0] == 'C'))
-    {
+    if ((cardTable[0] == 'V' || cardTable[0] == 'C')) {
       int quant = 0;
-      if ((cardTable[0] == 'V') && (jogou == true))
-      {
+      if ((cardTable[0] == 'V') && (jogou == true)) {
         printf("BUY 2\n");
         quant = 2;
         quantCartas = quantCartas + 2;
         jogou = false;
       }
-      if ((cardTable[0] == 'C') && (jogou == true))
-      {
+      if ((cardTable[0] == 'C') && (jogou == true)) {
         printf("BUY 4\n");
         quant = 4;
         quantCartas = quantCartas + 4;
         jogou = false;
       }
-      for (int i = 0; i < quant; i++)
-      {
+      for (int i = 0; i < quant; i++) {
         scanf("%s\n", hand);
         arquivoCartas = addCardFile(hand, endArqCartas, "a\0", NULL);
       }
-    }
-    else
-    {
+    } else {
 
       // printf("Entrou no else\n");
 
       arquivoCartas = fopen(endArqCartas, "r");
-      if (arquivoCartas == NULL)
-      {
+      if (arquivoCartas == NULL) {
         printf("Error ao abrir o arquivo\n");
       }
       // printf("Abriu o arquivo\n");
@@ -247,8 +248,7 @@ int main()
       // printf("É dez: %d\n", ehDez);
       int j = 0;
       // printf("Quant Cartas: %d\n", quantCartas);
-      while (j < quantCartas)
-      {
+      while (j < quantCartas) {
         // printf("Entrou no while\n");
         int valor = 5, i = 1;
 
@@ -258,29 +258,26 @@ int main()
 
         fscanf(arquivoCartas, "%s\n", cartaTeste);
         // printf("Depois do fscanf\n");
-        if (ehDez == true)
-        {
+        if (ehDez == true) {
 
           // printf("É dez: %d\n", ehDez);
           ehDez = verificarSeEhDez(cartaTeste);
           // printf("É dez depois da função: %d\n", ehDez);
         }
 
-        // printf("Carta teste: %c || cardTable: %c\n", cartaTeste[0], cardTable[0]);
-        if (((cartaTeste[0] == cardTable[0]) && cartaTeste[1] != '0') || (ehDez == true))
-        {
+        // printf("Carta teste: %c || cardTable: %c\n", cartaTeste[0],
+        // cardTable[0]);
+        if (((cartaTeste[0] == cardTable[0]) && cartaTeste[1] != '0') ||
+            (ehDez == true)) {
 
           // printf("Entrou na fução if\n");
           // printf("Carta teste [0]: %c\n", cartaTeste[0]);
           // debug("Passou do printf");
-          if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
-          {
+          if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C')) {
             debug("Entrou aqui");
             char simbolo[] = "♥";
             printf("DISCARD %s %s\n", cartaTeste, simbolo);
-          }
-          else
-          {
+          } else {
             printf("DISCARD %s\n", cartaTeste);
           }
 
@@ -293,29 +290,24 @@ int main()
           j = quantCartas + 1;
           break;
         }
-        // printf("Carta teste: %s || Naipe da vez: %s\n", cartaTeste, naipeDaVez);
-        for (i; i < valor; i++)
-        {
-          if (cartaTeste[i] == naipeDaVez[testador])
-          {
+        // printf("Carta teste: %s || Naipe da vez: %s\n", cartaTeste,
+        // naipeDaVez);
+        for (i; i < valor; i++) {
+          if (cartaTeste[i] == naipeDaVez[testador]) {
             testador++;
           }
           // printf("Testador: %d\n", testador);
         }
 
-        if (testador == 4)
-        {
+        if (testador == 4) {
           // printf("Carta teste [0]: %c\n", cartaTeste[0]);
 
-          if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
-          {
+          if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C')) {
             // printf("Entrou aqui\n");
 
             char simbolo[] = "♥";
             printf("DISCARD %s %s\n", cartaTeste, simbolo);
-          }
-          else if ((cartaTeste[0] != 'A') && (cartaTeste[0] != 'C'))
-          {
+          } else if ((cartaTeste[0] != 'A') && (cartaTeste[0] != 'C')) {
             printf("DISCARD %s\n", cartaTeste);
           }
           strcpy(cardTable, cartaTeste);
@@ -330,8 +322,7 @@ int main()
       }
 
       fclose(arquivoCartas);
-      if (j == quantCartas)
-      {
+      if (j == quantCartas) {
         printf("BUY 1\n");
         scanf("%s\n", hand);
         // printf("Hand: %s\n", hand);
