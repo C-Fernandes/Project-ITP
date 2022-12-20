@@ -1,16 +1,9 @@
-/*
-    "COMPRE 4"   : C = CORINGA
-    "COMPRE 2"   : V = VALETE
-    "VOLTA"      : D = DAMA
-    "PULA A VEZ" : R = REI
-    "MUDE A COR" : A = ÀS (muda o naipe)
-*/
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/** Constantes para as strings a serem lidas */
 #define MAX_LINE 100
 #define MAX_ACTION 10
 #define MAX_ID_SIZE 10
@@ -25,16 +18,16 @@ void debug(char *message) { fprintf(stderr, "%s\n", message); }
 FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[],
                   char caracterRemove[])
 {
-  // printf("entrou em addCardFile\n");
-  // printf("%s\n", vetor);
+  printf("entrou em addCardFile\n");
+
   FILE *file;
   char *variavel;
-  // printf("Antes de abrir arquivo");
+
   file = fopen(endereco, tipoAbertura);
-  // printf("abriu o arquivo\n");
+
   if (file == NULL)
   {
-    // printf("Problemas ao abrir o arquivo\n");
+    printf("Problemas ao abrir o arquivo\n");
   }
 
   variavel = strtok(vetor, " ");
@@ -45,7 +38,6 @@ FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[],
 
     variavel = strtok(NULL, " ");
   }
-  // printf("Saiu do while\n");
 
   fclose(file);
   return file;
@@ -53,7 +45,7 @@ FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[],
 
 FILE *removerInfo(char info[], char endereco[], int quantCartas)
 {
-  // printf("entrou em removerInfo\n");
+  printf("entrou em removerInfo\n");
   int contadorRepeticoes = 0;
   char vetorCartas[quantCartas][8];
   FILE *file;
@@ -65,15 +57,12 @@ FILE *removerInfo(char info[], char endereco[], int quantCartas)
   {
     fscanf(file, "%s\n", carta);
 
-    // printf("Carta: %s || Info: %s\n", carta, info);
-
     if ((strcmp(info, carta) == 0))
     {
       contadorRepeticoes++;
     }
     if ((strcmp(info, carta) != 0))
     {
-      // printf("Não encontrou a carta\n");
       strcpy(vetorCartas[contador], carta);
       contador++;
     }
@@ -95,7 +84,6 @@ FILE *removerInfo(char info[], char endereco[], int quantCartas)
   {
 
     fprintf(file, "%s\n", vetorCartas[i]);
-    // printf("Adicionou: %s\n", vetorCartas[i]);
   }
   fclose(file);
   return file;
@@ -103,7 +91,7 @@ FILE *removerInfo(char info[], char endereco[], int quantCartas)
 
 int verificarSeEhDez(char carta[])
 {
-  // printf("entrou em verificarSeEhDez\n");
+  printf("entrou em verificarSeEhDez\n");
   if (carta[0] == '1' && carta[1] == '0')
   {
 
@@ -118,7 +106,7 @@ int verificarSeEhDez(char carta[])
 
 void mudarNaipe(char carta[], char *naipeDaVez)
 {
-  // printf("Entrou no mudar naipe\n");
+  printf("Entrou no mudar naipe\n");
   char naipe[4];
   int ehDez;
   ehDez = verificarSeEhDez(carta);
@@ -138,13 +126,13 @@ void mudarNaipe(char carta[], char *naipeDaVez)
     contador++;
   }
   strcpy(naipeDaVez, naipe);
-  // printf("Sainda naipe função: %s\n", naipeDaVez);
 }
 
 // FUNÇÃO PARA VERIFICAR QUAL O MELHOR NAIPE PARA JOGAR:
 void qualNaipe(char *naipeDaVez, int quantCartas)
 {
-  char melhorNaipe[4];            // Melhor naipe a se jogar
+  printf("entrou na função qualNaipe()\n");
+  //  Melhor naipe a se jogar
   int qtdNaipes[] = {0, 0, 0, 0}; // vetor para verificar quantidade de cartas de cada naipe
 
   // Verificando quantas cartas de cada naipe o bot tem:
@@ -153,44 +141,57 @@ void qualNaipe(char *naipeDaVez, int quantCartas)
   char carta[6];
   int ehDez, valor, w, referencia = 4;
 
-  arqCartas = fopen("Arquivos/cartas.txt", "r");
   for (int i = 0; i < 4; i++)
   {
+    arqCartas = fopen("Arquivos/cartas.txt", "r");
+    if (quantCartas == NULL)
+    {
+      printf("Error ao abrir arqCartas\n");
+    }
+    // printf("Entrou no primeiro for\n");
+
+    // printf("NaipeDaVez: %s\n", tiposDeNaipes[i]);
     for (int k = 0; k < quantCartas; k++)
     {
 
       fscanf(arqCartas, "%s\n", carta);
+      // printf("PrimeiraCarta: %s\n", carta);
       ehDez = verificarSeEhDez(carta);
       int ehIgual = 0;
       if (ehDez == true)
       {
+        // printf("É dez\n");
         w = 2;
         valor = 6;
         referencia = 3;
       }
       else
       {
+        // printf("Não é dez\n");
         w = 1;
         valor = 5;
         referencia = 4;
       }
       for (w; w < valor; w++)
       {
-        if (strcmp(carta[w], tiposDeNaipes[i][ehIgual]) == 0)
+        if (tiposDeNaipes[i][ehIgual] == carta[w])
         {
+
           ehIgual++;
+          // printf("É igual: %d\n", ehIgual);
         }
       }
       if (ehIgual == referencia)
       {
         qtdNaipes[i]++;
+        // printf("Quant naipes[i] = %d\n", qtdNaipes[i]);
       }
     }
-
     fclose(arqCartas);
   }
 
-  // Comparando valores para saber qual dos naipes tem mais cartas:
+  // printf("pASSOU AQUI\n");
+  //  Comparando valores para saber qual dos naipes tem mais cartas:
   int posicaoMaior = 0;
   for (int i = 1; i < 4; i++)
   {
@@ -203,13 +204,88 @@ void qualNaipe(char *naipeDaVez, int quantCartas)
       posicaoMaior = i;
     }
   }
-  // atribuindo char do naipe escolhido para a variavel melhorNaipe
-  for (int i = 0; i < 4; i++)
+  //  atribuindo char do naipe escolhido para a variavel melhorNaipe
+
+  strcpy(naipeDaVez, tiposDeNaipes[posicaoMaior]);
+}
+int verificarNaipe(char carta[], char naipe[])
+{
+  printf("Entrou na função verificar naipe\n");
+  int ehDez = verificarSeEhDez(carta);
+  int i = 1, valor = 5, contador = 0;
+  char naipeTeste[5];
+  if (ehDez == true)
   {
-    melhorNaipe[i] = tiposDeNaipes[posicaoMaior][i];
+    i = 2;
+    valor = 6;
   }
 
-  strcpy(naipeDaVez, melhorNaipe);
+  for (i; i < valor; i++)
+  {
+    // printf("Começou a comparaação\n");
+    naipeTeste[contador] = carta[i];
+    contador++;
+    // printf("contador: %d\n", contador);
+  }
+  printf("%s\n", naipeTeste);
+  printf("%s\n", naipe);
+  // printf("Chegou aqui\n");
+  printf("Naipe teste: %s | naipe : %s\n", naipeTeste, naipe);
+  if (strcmp(naipeTeste, naipe) == 0)
+  {
+    printf("retornou TRUE\n");
+    return true;
+  }
+
+  printf("retornou FALSE\n");
+  return false;
+}
+int verificarSeTemCouV(int quantCartas, char *cartaTeste, char naipeDaVez[])
+{
+  printf("Entrou em verificar se é c ou v\n");
+  FILE *arqcartas;
+  char carta[6];
+  arqcartas = fopen("Arquivos/cartas.txt", "r");
+  printf("\nVerificar se é C\n\n");
+  for (int i = 0; i < quantCartas; i++)
+  {
+
+    fscanf(arqcartas, "%s\n", carta);
+    printf("Carta: %s\n", carta);
+    if (carta[0] == 'C')
+    {
+      int teste = verificarNaipe(carta, naipeDaVez);
+      if (teste)
+      {
+        printf("Entrou nos dois if\n");
+        strcpy(cartaTeste, carta);
+        return 1;
+      }
+    }
+  }
+  fclose(arqcartas);
+  arqcartas = fopen("Arquivos/cartas.txt", "r");
+  printf("\nVerificar se é v\n\n");
+  for (int i = 0; i < quantCartas; i++)
+  {
+
+    fscanf(arqcartas, "%s\n", carta);
+    printf("Carta: %s\n", carta);
+    if (carta[0] == 'V')
+    {
+      int teste = verificarNaipe(carta, naipeDaVez);
+      if (teste)
+      {
+        printf("Entrou nos dois if\n");
+        strcpy(cartaTeste, carta);
+        return 2;
+      }
+    }
+  }
+  fclose(arqcartas);
+  printf("saindo de verificar se tem C ou V\n");
+
+  return false;
 }
 
 int main()
@@ -268,6 +344,7 @@ int main()
       if (strcmp(action, "DISCARD") == 0)
       {
         trocouNaipe = false;
+        printf("If Discard, Trocou naipe = false\n");
         jogou = true;
         strcpy(cardTable, complement);
         jaFoiComprado == false;
@@ -275,11 +352,13 @@ int main()
         {
 
           scanf(" %s", naipeDaVez);
+          printf("Pegou naipe\n");
         }
         if ((complement[0] != 'A') && (complement[0] != 'C'))
         {
-          // printf("Entrou no segundo if\n");
+          printf("Entrou no segundo if\n");
           mudarNaipe(complement, &naipeDaVez);
+          printf("Mudou naipe\n");
         }
       }
       else
@@ -288,7 +367,10 @@ int main()
         {
           if (trocouNaipe == false)
           {
+            printf("Entrou nos if depois do else");
+            printf("Trocou naipe false\n");
             mudarNaipe(cardTable, &naipeDaVez);
+            printf("Mudou naipe\n");
           }
         }
       }
@@ -302,17 +384,7 @@ int main()
 
     debug("Teste debug\n");
 
-    arquivoCartas = fopen(endArqCartas, "r");
-    char variavelTeste[10];
-    for (int i = 0; i < quantCartas; i++)
-    {
-      fscanf(arquivoCartas, "%s\n", variavelTeste);
-      // printf("%s ", variavelTeste);
-    }
-    // printf("\n");
-    fclose(arquivoCartas);
-
-    if ((cardTable[0] == 'V' || cardTable[0] == 'C') && (jogou == true))
+    if ((cardTable[0] == 'V') && (jogou == true))
     {
       int quant = 0;
       if ((cardTable[0] == 'V'))
@@ -336,132 +408,137 @@ int main()
     else
     {
 
-      // printf("Entrou no else\n");
+      printf("Entrou no else\n");
 
       arquivoCartas = fopen(endArqCartas, "r");
       if (arquivoCartas == NULL)
       {
         printf("Error ao abrir o arquivo\n");
       }
-      // printf("Abriu o arquivo\n");
-      ehDez = verificarSeEhDez(cardTable);
-      // printf("Passou da função ehDez\n");
-      // printf("É dez: %d\n", ehDez);
+      printf("Abriu o arquivo\n");
+
+      printf("Passou da função ehDez\n");
+      printf("É dez: %d\n", ehDez);
       int j = 0;
-      // printf("Quant Cartas: %d\n", quantCartas);
-      while (j < quantCartas)
+      char cartaTeste[6];
+      printf("Quant Cartas: %d\n", quantCartas);
+      int temCouV = verificarSeTemCouV(quantCartas, cartaTeste, naipeDaVez);
+      printf("Retorno função: %d", temCouV);
+      if (temCouV == 1)
       {
-        // printf("Entrou no while\n");
-        int valor = 5, i = 1;
 
-        int testador = 0;
-        char cartaTeste[6];
-        // printf("Passa aqui\n");
-
-        fscanf(arquivoCartas, "%s\n", cartaTeste);
-
-        if (ehDez == true)
-        {
-          // printf("É dez: %d\n", ehDez);
-          valor = 6;
-          i = 2;
-          ehDez = verificarSeEhDez(cartaTeste);
-          // printf("É dez depois da função: %d\n", ehDez);
-        }
-
-        // printf("Carta teste: %c || cardTable: %c\n", cartaTeste[0], cardTable[0]);
-        if (((cartaTeste[0] == cardTable[0])) || (ehDez == true))
-        {
-
-          // printf("Entrou na fução if\n");
-          // printf("Carta teste [0]: %c\n", cartaTeste[0]);
-          debug("Passou do printf");
-          if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
-          {
-            debug("Entrou aqui");
-            char simbolo[] = "♥";
-            strcpy(naipeDaVez, simbolo);
-            printf("DISCARD %s %s\n", cartaTeste, simbolo);
-            trocouNaipe == true;
-          }
-          else
-          {
-            printf("DISCARD %s\n", cartaTeste);
-            mudarNaipe(cardTable, &naipeDaVez);
-          }
-
-          // printf("Cardtable antes da função: %s\n", cardTable);
-          strcpy(cardTable, cartaTeste);
-
-          // printf("Cardtable depois da função: %s\n", cardTable);
-          quantCartas--;
-          removerInfo(cartaTeste, endArqCartas, quantCartas);
-          j = quantCartas + quantCartas;
-          break;
-        }
-        // printf("Carta teste: %s || Naipe da vez: %s\n", cartaTeste, naipeDaVez);
-        ehDez = verificarSeEhDez(cartaTeste);
-        // printf("EhDez: %d\n", ehDez);
-        if (ehDez == false)
-        {
-          // printf("Entrou no if, a cartaDetese nn é dez\n");
-          i = 1;
-          valor = 5;
-          verificardorNaipe = 4;
-        }
-        else
-        {
-          // printf("Entrou no else do 3");
-          verificardorNaipe = 3;
-        }
-        for (i; i < valor; i++)
-        {
-          if (cartaTeste[i] == naipeDaVez[testador])
-          {
-            testador++;
-            // printf("Testador: %d\n", testador);
-          }
-        }
-
-        if (testador == verificardorNaipe)
-        {
-          // printf("Carta teste [0]: %c\n", cartaTeste[0]);
-
-          if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
-          {
-            // printf("Entrou aqui\n");
-            char simbolo[] = "♥";
-            strcpy(naipeDaVez, simbolo);
-            printf("DISCARD %s %s\n", cartaTeste, simbolo);
-            trocouNaipe = true;
-          }
-          else
-          {
-            printf("DISCARD %s\n", cartaTeste);
-          }
-          strcpy(cardTable, cartaTeste);
-
-          quantCartas--;
-          removerInfo(cartaTeste, endArqCartas, quantCartas);
-          j = quantCartas + quantCartas;
-          break;
-        }
-        j++;
-        // printf("Valor j: %d\n", j);
+        qualNaipe(&naipeDaVez, quantCartas);
+        printf("DISCARD %s %s\n", cartaTeste, naipeDaVez);
+        quantCartas--;
+        removerInfo(cartaTeste, endArqCartas, quantCartas);
+        trocouNaipe == true;
       }
-      fclose(arquivoCartas);
-
-      if (j == quantCartas)
+      if (temCouV == 2)
       {
-        printf("BUY 1\n");
-        scanf("%s\n", hand);
-        // printf("Hand: %s\n", hand);
-        arquivoCartas = addCardFile(hand, endArqCartas, "a\0", "]\0");
-        quantCartas++;
-        // printf("Passou no ultimo if %d\n", quantCartas);
+        printf("DISCARD %s\n", cartaTeste);
+        quantCartas--;
+        removerInfo(cartaTeste, endArqCartas, quantCartas);
+      }
+      else
+      {
+        arquivoCartas = fopen(endArqCartas, "r");
+        if (arquivoCartas == NULL)
+        {
+          printf("Error ao abrir o arquivo\n");
+        }
+        while (j < quantCartas)
+        {
+
+          printf("Entrou no while\n");
+          int valor = 5, i = 1;
+
+          int testador = 0;
+
+          fscanf(arquivoCartas, "%s\n", cartaTeste);
+          ehDez = verificarSeEhDez(cardTable);
+
+          if (ehDez == true)
+          {
+            printf("É dez: %d\n", ehDez);
+            valor = 6;
+            i = 2;
+            ehDez = verificarSeEhDez(cartaTeste);
+            printf("É dez depois da função: %d\n", ehDez);
+          }
+
+          printf("Carta teste: %c || cardTable: %c\n", cartaTeste[0], cardTable[0]);
+          if (((cartaTeste[0] == cardTable[0])) || (ehDez == true))
+          {
+
+            printf("Entrou na fução if\n");
+            printf("Carta teste [0]: %c\n", cartaTeste[0]);
+            debug("Passou do printf");
+            if ((cartaTeste[0] == 'A'))
+            {
+              debug("Entrou aqui");
+              printf("DISCARD %s %s\n", cartaTeste, naipeDaVez);
+              trocouNaipe == true;
+              printf("Trocou naipe = true\n");
+            }
+            else
+            {
+              printf("DISCARD %s\n", cartaTeste);
+              mudarNaipe(cardTable, &naipeDaVez);
+            }
+
+            printf("Cardtable antes da função: %s\n", cardTable);
+            strcpy(cardTable, cartaTeste);
+
+            printf("Cardtable depois da função: %s\n", cardTable);
+            quantCartas--;
+            removerInfo(cartaTeste, endArqCartas, quantCartas);
+            j = quantCartas + quantCartas;
+            break;
+          }
+          printf("Carta teste: %s || Naipe da vez: %s\n", cartaTeste, naipeDaVez);
+
+          int verificacao = verificarNaipe(cartaTeste, naipeDaVez);
+
+          if (verificacao == true)
+          {
+            printf("Carta teste [0]: %c\n", cartaTeste[0]);
+
+            if (cartaTeste[0] == 'A')
+            {
+              printf("Entrou aqui\n");
+              qualNaipe(&naipeDaVez, quantCartas);
+              printf("DISCARD %s %s\n", cartaTeste, naipeDaVez);
+              trocouNaipe = true;
+              printf("Trocou naipe = true\n");
+            }
+            else
+            {
+              printf("DISCARD %s\n", cartaTeste);
+            }
+            strcpy(cardTable, cartaTeste);
+
+            quantCartas--;
+            removerInfo(cartaTeste, endArqCartas, quantCartas);
+            j = quantCartas + quantCartas;
+            break;
+          }
+          j++;
+          printf("Valor j: %d\n", j);
+          printf("Passou daqui\n");
+          if (j == quantCartas){
+            printf("BUY 1\n");
+            scanf("%s\n", hand);
+            arquivoCartas = addCardFile(hand, endArqCartas, "a\0", "]\0");
+            quantCartas++;
+
+            printf("Passou no ultimo if %d\n", quantCartas);
+            break;
+          }
+          printf("Passou do if\n");
+        }
+        fclose(arquivoCartas);
       }
     }
   }
-
   return 0;
 }
