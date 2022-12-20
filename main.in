@@ -1,7 +1,66 @@
 PLAYERS main bot_A
 YOU main
-HAND [ D♠ 2♣ 6♣ V♣ 3♣ C♣ 7♠ ]
+HAND [ 9♦ 10♣ 2♣ 4♦ D♠ D♦ V♥ ]
 TABLE A♥
 TURN bot_A
+DISCARD 2♥
+TURN main
+TURN bot_A
+BUY 1
+TURN main
+TURN bot_A
+DISCARD 10♠
+TURN main
+TURN bot_A
+DISCARD 5♠
+TURN main
+6♥
+TURN bot_A
+DISCARD 5♦
+TURN main
+TURN bot_A
+DISCARD R♦
+TURN bot_A
+DISCARD 3♦
+TURN main
+TURN bot_A
+BUY 1
+TURN main
+TURN bot_A
+DISCARD 8♦
+TURN main
+7♠
+TURN bot_A
 DISCARD 8♥
+TURN main
+TURN bot_A
+BUY 2
+TURN main
+4♣
+R♣
+TURN bot_A
+DISCARD 10♥
+TURN main
+TURN bot_A
+DISCARD 7♥
+TURN main
+TURN bot_A
+BUY 1
+TURN main
+D♥
+TURN bot_A
+BUY 1
+TURN main
+D♠
+TURN bot_A
+BUY 1
+TURN main
+TURN bot_A
+BUY 1
+TURN main
+TURN bot_A
+DISCARD 4♥
+TURN main
+TURN bot_A
+DISCARD C♣ ♥
 TURN main
