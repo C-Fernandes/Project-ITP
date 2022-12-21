@@ -10,9 +10,15 @@
 #define false 0
 #define true 1
 
-char tiposDeNaipes[4][4] = {{"♥"}, {"♦"}, {"♣"}, {"♠"}};
+char tiposDeNaipes[4][4] = {{"♥"},  // Copas
+                            {"♦"},  // Ouros
+                            {"♣"},  // Paus
+                            {"♠"}}; // Espada
 
-void debug(char *message) { fprintf(stderr, "%s\n", message); }
+void debug(char *message)
+{
+  fprintf(stderr, "%s\n", message);
+}
 
 FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[],
                   char caracterRemove[])
@@ -30,7 +36,6 @@ FILE *addCardFile(char vetor[], char endereco[MAX_LINE], char tipoAbertura[],
   while (variavel != NULL && variavel[0] != ']')
   {
     fprintf(file, "%s\n", variavel);
-
     variavel = strtok(NULL, " ");
   }
 
@@ -122,16 +127,17 @@ void mudarNaipe(char carta[], char *naipeDaVez)
 
 void qualNaipe(char *naipeDaVez, int quantCartas)
 {
-  char melhorNaipe[4];            
-  int qtdNaipes[] = {0, 0, 0, 0}; 
+  //printf("Entrou aqui\n");
+  char naipeTeste[4];
+  int qtdNaipes[] = {0, 0, 0, 0};
 
   FILE *arqCartas;
   char carta[6];
   int ehDez, valor, w, referencia = 4;
 
-  arqCartas = fopen("Arquivos/cartas.txt", "r");
   for (int i = 0; i < 4; i++)
   {
+    arqCartas = fopen("Arquivos/cartas.txt", "r");
     for (int k = 0; k < quantCartas; k++)
     {
 
@@ -142,54 +148,45 @@ void qualNaipe(char *naipeDaVez, int quantCartas)
       {
         w = 2;
         valor = 6;
-        referencia = 3;
       }
       else
       {
         w = 1;
         valor = 5;
-        referencia = 4;
       }
+      // printf("Carta %s | ", carta);
+      // printf("Naipe: %s\n", tiposDeNaipes[i]);
       for (w; w < valor; w++)
       {
-        if (strcmp(carta[w], tiposDeNaipes[i][ehIgual]) == 0)
-        {
-          ehIgual++;
-        }
+        naipeTeste[ehIgual] = carta[w];
+        ehIgual++;
+        // printf("É Igual: %d\n", ehIgual);
       }
-      if (ehIgual == referencia)
+
+      if (strcmp(naipeTeste, tiposDeNaipes[i]))
       {
         qtdNaipes[i]++;
       }
     }
-
     fclose(arqCartas);
   }
-
   int posicaoMaior = 0;
+
   for (int i = 1; i < 4; i++)
   {
     if (qtdNaipes[i] < qtdNaipes[i - 1])
     {
-      posicaoMaior = i - 1;
-    }
-    else
-    {
-      posicaoMaior = i;
+      posicaoMaior = qtdNaipes[i - 1];
     }
   }
 
-  for (int i = 0; i < 4; i++)
-  {
-    melhorNaipe[i] = tiposDeNaipes[posicaoMaior][i];
-  }
-
-  strcpy(naipeDaVez, melhorNaipe);
+  //printf("Melhor naipe: %s\n", tiposDeNaipes[posicaoMaior]);
+  strcpy(naipeDaVez, tiposDeNaipes[posicaoMaior]);
 }
 
 int main()
 {
-  FILE *arquivoCartas, *arquivoCartasPlayers;
+  FILE *arquivoCartas;
 
   char hand[MAX_LINE];
   char my_id[MAX_ID_SIZE];
@@ -200,7 +197,6 @@ int main()
   int quantCartas = 7;
   char card[MAX_ID_SIZE];
 
-  int quantRodadas = 0;
   int verificardorNaipe;
 
   int ehDez = false, jaFoiComprado = false, trocouNaipe = false;
@@ -231,7 +227,6 @@ int main()
     do
     {
 
-      quantRodadas++;
       scanf("%s %s", action, complement);
       if (strcmp(complement, my_id) != 0)
       {
@@ -245,10 +240,9 @@ int main()
         trocouNaipe = false;
         jogou = true;
         strcpy(cardTable, complement);
-        jaFoiComprado == false;
+        jaFoiComprado = false;
         if ((complement[0] == 'A') || (complement[0] == 'C'))
         {
-
           scanf(" %s", naipeDaVez);
         }
         if ((complement[0] != 'A') && (complement[0] != 'C'))
@@ -258,23 +252,15 @@ int main()
       }
       else
       {
-        if (strcmp(action, "TURN") != 0)
-        {
-          if (trocouNaipe == false)
-          {
-            mudarNaipe(cardTable, &naipeDaVez);
-          }
-        }
+        mudarNaipe(cardTable, &naipeDaVez);
       }
-
       getchar();
 
     } while (strcmp(action, "TURN") || strcmp(complement, my_id));
 
-    
-
-    if ((cardTable[0] == 'V' || cardTable[0] == 'C') && (jogou == true ))
+    if ((cardTable[0] == 'V' || cardTable[0] == 'C') && (jogou == true))
     {
+
       int quant = 0;
       if ((cardTable[0] == 'V'))
       {
@@ -302,14 +288,14 @@ int main()
       {
         printf("Error ao abrir o arquivo\n");
       }
-      
+
       ehDez = verificarSeEhDez(cardTable);
-      
+
       int j = 0;
-      
+
       while (j < quantCartas)
       {
-        
+
         int valor = 5, i = 1;
 
         int testador = 0;
@@ -324,19 +310,23 @@ int main()
           ehDez = verificarSeEhDez(cartaTeste);
         }
 
-        if (((cartaTeste[0] == cardTable[0])) || (ehDez == true))
+        if ((cartaTeste[0] == cardTable[0]) || (ehDez == true))
         {
-          debug("Passou do printf");
+          debug(cartaTeste);
           if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
           {
             debug("Entrou aqui");
-            char simbolo[] = "♥";
-            strcpy(naipeDaVez, simbolo);
-            printf("DISCARD %s %s\n", cartaTeste, simbolo);
-            trocouNaipe == true;
+            qualNaipe(&naipeDaVez, quantCartas);
+            debug(naipeDaVez);
+
+            //printf("Naipe da vez: %s", naipeDaVez);
+            //  printf("Saiu daqui!\n");
+            printf("DISCARD %s %s\n", cartaTeste, naipeDaVez);
+            trocouNaipe = true;
           }
           else
           {
+            debug("entrou no else");
             printf("DISCARD %s\n", cartaTeste);
             mudarNaipe(cardTable, &naipeDaVez);
           }
@@ -352,30 +342,26 @@ int main()
 
         if (ehDez == false)
         {
-          
           i = 1;
           valor = 5;
-          verificardorNaipe = 4;
         }
-        else
-        {
-          verificardorNaipe = 3;
-        }
+        char naipeTeste[4];
         for (i; i < valor; i++)
         {
-          if (cartaTeste[i] == naipeDaVez[testador])
-          {
-            testador++;
-          }
+
+          naipeTeste[testador] = cartaTeste[i];
+          testador++;
         }
 
-        if (testador == verificardorNaipe)
+        if (strcmp(naipeTeste, naipeDaVez) == 0)
         {
           if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
           {
-            char simbolo[] = "♥";
-            strcpy(naipeDaVez, simbolo);
-            printf("DISCARD %s %s\n", cartaTeste, simbolo);
+            qualNaipe(&naipeDaVez, quantCartas);
+            // printf("Naipe da vez: %s\n", naipeDaVez);
+            //  printf("Saiu daqui!\n");
+
+            printf("DISCARD %s %s\n", cartaTeste, naipeDaVez);
             trocouNaipe = true;
           }
           else

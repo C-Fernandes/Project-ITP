@@ -1,188 +1,70 @@
-PLAYERS main bot_A bot_B bot_C
+PLAYERS main bot_A
 YOU main
-HAND [ 10♦ 2♠ 9♠ A♠ R♦ R♥ D♣ ]
-TABLE A♥
+HAND [ 10♠ 9♦ 7♦ V♥ 4♥ R♥ V♣ ]
+TABLE A♣
 TURN main
-TURN bot_A
-DISCARD A♣ ♥
-TURN bot_B
-DISCARD 10♥
-TURN bot_C
-DISCARD 10♥
-TURN main
-TURN bot_A
-DISCARD V♦
-TURN bot_B
-BUY 2
-TURN bot_C
-BUY 2
-TURN main
-TURN bot_B
-DISCARD 9♦
-TURN bot_C
-DISCARD 7♦
-TURN main
-8♥
-TURN bot_A
-BUY 1
-TURN bot_B
-DISCARD D♦
-TURN bot_A
-DISCARD D♦
-TURN bot_B
-DISCARD 2♦
-TURN bot_C
-DISCARD 10♦
-TURN main
-4♣
-TURN bot_A
-DISCARD 10♣
-TURN bot_B
-DISCARD 6♣
-TURN bot_C
-BUY 1
-TURN main
-TURN bot_C
-BUY 1
-TURN bot_B
-DISCARD 9♣
-TURN bot_A
-DISCARD 8♣
-TURN main
-TURN bot_C
-DISCARD C♥ ♥
-TURN bot_B
-BUY 4
-TURN bot_A
-BUY 4
-TURN main
-TURN bot_B
-DISCARD 5♥
-TURN bot_A
-BUY 1
-TURN main
-7♣
-TURN bot_C
-DISCARD V♥
-TURN bot_B
-BUY 2
 TURN bot_A
 BUY 2
 TURN main
-R♣
-TURN bot_C
+TURN bot_A
+BUY 2
+TURN main
+TURN bot_A
 DISCARD 8♥
-TURN bot_B
-DISCARD C♥ ♥
+TURN main
+TURN main
+5♦
 TURN bot_A
-BUY 4
-TURN main
-A♠
-TURN bot_C
-BUY 4
-TURN bot_B
-DISCARD 6♥
-TURN bot_A
-DISCARD 7♥
-TURN main
-TURN bot_C
-DISCARD 5♣
-TURN bot_B
-DISCARD D♣
-TURN bot_C
-BUY 1
-TURN main
-TURN bot_A
-DISCARD 3♣
-TURN bot_B
-BUY 1
-TURN bot_C
-DISCARD 7♣
-TURN main
-TURN bot_B
-BUY 1
-TURN bot_C
-BUY 1
-TURN main
-4♠
-TURN bot_A
-DISCARD 6♣
-TURN bot_B
-DISCARD R♣
-TURN main
-D♠
+DISCARD R♦
 TURN bot_A
 DISCARD R♠
-TURN bot_C
-BUY 1
-TURN main
 TURN bot_A
-DISCARD 8♠
-TURN bot_B
 DISCARD 6♠
-TURN bot_C
-BUY 1
 TURN main
+6♦
 TURN bot_A
-DISCARD 10♠
-TURN bot_B
+DISCARD D♠
+TURN main
+8♦
+TURN bot_A
 DISCARD 9♠
-TURN bot_C
+TURN main
+TURN bot_A
+DISCARD 9♣
+TURN main
+2♠
+TURN bot_A
+DISCARD 7♣
+TURN main
+TURN bot_A
 BUY 1
 TURN main
 TURN bot_A
-DISCARD A♥ ♥
-TURN bot_B
-DISCARD 5♥
-TURN bot_C
-DISCARD 2♥
-TURN main
-6♥
-TURN bot_A
-DISCARD 2♦
-TURN bot_B
-DISCARD 4♦
-TURN bot_C
-DISCARD A♦ ♥
-TURN main
-TURN bot_A
-DISCARD 6♦
-TURN bot_B
-DISCARD 5♦
-TURN bot_C
-DISCARD 8♦
-TURN main
-2♣
-TURN bot_A
-DISCARD 9♦
-TURN bot_B
 BUY 1
-TURN bot_C
-DISCARD 4♦
 TURN main
 TURN bot_A
-DISCARD 8♠
-TURN bot_B
-DISCARD V♠
-TURN bot_C
-BUY 2
-TURN main
-TURN bot_C
-BUY 1
-TURN bot_B
-BUY 1
-TURN bot_A
-DISCARD V♠
+DISCARD 6♥
 TURN main
 5♣
-R♠
-TURN bot_C
-BUY 2
-TURN bot_B
-BUY 2
 TURN bot_A
-DISCARD 7♠
+DISCARD 3♥
 TURN main
-TURN bot_B
-DISCARD 3♠
+10♠
+TURN bot_A
+BUY 1
+TURN main
+R♥
+TURN bot_A
+DISCARD V♥
+TURN main
+4♣
+6♣
+TURN bot_A
+BUY 1
+TURN main
+TURN main
+C♥
+TURN bot_A
+BUY 1
+TURN main
 TURN bot_A
