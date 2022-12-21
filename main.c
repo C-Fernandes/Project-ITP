@@ -172,11 +172,11 @@ void qualNaipe(char *naipeDaVez, int quantCartas)
   }
   int posicaoMaior = 0;
 
-  for (int i = 1; i < 4; i++)
+  for (int i = 0; i < (4-1); i++)
   {
-    if (qtdNaipes[i] < qtdNaipes[i - 1])
+    if (qtdNaipes[i] > qtdNaipes[i+1])
     {
-      posicaoMaior = qtdNaipes[i - 1];
+      posicaoMaior = i ;
     }
   }
 
@@ -316,6 +316,7 @@ int main()
           if ((cartaTeste[0] == 'A') || (cartaTeste[0] == 'C'))
           {
             debug("Entrou aqui");
+            debug("Teste");
             qualNaipe(&naipeDaVez, quantCartas);
             debug(naipeDaVez);
 
